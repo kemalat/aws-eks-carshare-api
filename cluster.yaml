@@ -1,0 +1,17 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: rideshare-cluster
+  region: us-east-1
+  version: "1.14"
+
+availabilityZones: ["us-east-1a", "us-east-1b","us-east-1c"]
+
+nodeGroups:
+  - name: rideshare-nodes
+    instanceType: t2.medium
+    volumeSize: 30
+    desiredCapacity: 4
+    privateNetworking: true
+    maxPodsPerNode: 10

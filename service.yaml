@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:    #selects Pods
+    app: rideshare-service-h2
+  name: rideshare-service-h2
+  namespace: default
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+    - nodePort: 30083
+      port: 8083
+      protocol: TCP
+      targetPort: 8083
+  selector:
+    app: rideshare-service-h2
+  sessionAffinity: None   #None, ClientIP
+  type: LoadBalancer

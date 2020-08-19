@@ -1,0 +1,49 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: rideshare-service-h2
+  name: rideshare-service-h2
+  namespace: default
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  minReadySeconds: 45  # when a new deployment applied, it waits pod ready+45seconds for application up!
+  selector:
+    matchLabels:
+      app: rideshare-service-h2
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:   #pod template
+    metadata:
+      labels:
+        app: rideshare-service-h2
+    spec:
+      containers:
+        - image: 010398383971.dkr.ecr.us-east-2.amazonaws.com/kemalat/rideshare-service-h2
+          imagePullPolicy: IfNotPresent  #IfNotPresent, Always
+          name: rideshare-service-h2
+          resources: {}
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: rideshare-service-h2
+  namespace: default
+spec:
+  maxReplicas: 10
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: extensions/v1beta1
+    kind: Deployment
+    name: rideshare-service-h2
+  targetCPUUtilizationPercentage: 70
+

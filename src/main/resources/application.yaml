@@ -1,0 +1,44 @@
+server:
+  port: 8083              # www 80, api-gateway 8080, and others take diff. ports
+
+spring:
+  profiles:
+#    include: db          # to include application-db.yaml file
+#    active:              # none, dev, test ... to switch profiles
+  application:
+    name: rideshare-service-h2
+  h2:                     # db
+    console:
+      enabled: true
+      path: /h2
+      settings:
+        trace: false
+        web-allow-others: true
+  datasource:            # datasource
+    url: jdbc:h2:./data;DB_CLOSE_DELAY=-1;
+    platform: h2
+    username: sa
+    password:
+    driverClassName: org.h2.Driver
+  jpa:                   # jpa
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true
+
+
+logging:
+#  config: classpath:config/logback-spring.xml
+#  level:
+#    org.springframework.web: DEBUG
+#    org.springframework.cache: DEBUG
+#    guru.springframework.controllers: DEBUG
+#    org.hibernate: ERROR
+  file:
+    name: logs/${spring.application.name}.log
+  pattern:
+    console: "%d %-5level [${spring.application.name}] [%thread] %logger{0}.%method: %msg%n"
+    file: "%d %-5level [${spring.application.name}] [%thread] %logger{0}.%method : %msg%n"
+    rolling-file-name: ${LOG_FILE}.%d{yyyy-MM-dd}.%i.log.gz
+
