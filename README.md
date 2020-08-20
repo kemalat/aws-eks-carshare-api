@@ -90,6 +90,11 @@
     - Run `kubectl get svc --all-namespaces` to get service name which has the EXTERNAL-IP
     - Run `kubectl delete svc rideshare-service-h2` to delete service 
     - Run `eksctl delete cluster --name rideshare-cluster`
+    
+7. Clean up VPC, EC2 resources
+    - Open AWS EC2 dashboard and terminate EC2 instances
+    - Open AWS VPC dashboard and terminate VPC resources
+    - Do not forget to clean VPC and EC2 resources after EKS cluster termination to avoid incurring costs. 
 
 ## How to Test 
 
